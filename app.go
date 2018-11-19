@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"database/sql"
-	_ "github.com/go-sql-driver/mysql"
 
 )
+
+//handling GET and POST requests
 
 func hello(w http.ResponseWriter, r *http.Request) {
     if r.URL.Path != "/" {
@@ -17,12 +17,12 @@ func hello(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 		case "GET":     
 		    fmt.Println("this is get")
-			http.ServeFile(w, r, "random.html")
+			http.ServeFile(w, r, "home.html")
 		case "POST": 
 			fmt.Println("this is post")
 			err := r.ParseForm()
 			if err != nil {
-				fmt.Fprintf(w, "no idea what but something wrong");
+				fmt.Fprintf(w, "Something wrong");
 			}
 		
 			name := r.FormValue("username")
@@ -36,20 +36,11 @@ func hello(w http.ResponseWriter, r *http.Request) {
 
 
 func main() {
-	db, err := sql.Open("mysql",
-		"user:password@tcp(127.0.0.1:3306)/hello")
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer db.Close()
+
 	http.HandleFunc("/", hello)
 	fmt.Println("hi, noob! listening on 3000")
 
 	if err := http.ListenAndServe(":3000", nil); err != nil {
 		log.Fatal(err)
 	}
-// 	db, err := sql.Open("mysql", "theUser:thePassword@/theDbName")
-//     if err != nil {
-//       panic(err)
-//  }
-} 
+}
