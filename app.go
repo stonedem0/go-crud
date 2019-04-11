@@ -8,7 +8,6 @@ import (
 	
 )
 
-
 //handling GET and POST requests
 
 func hello(db *Database) http.HandlerFunc {
@@ -40,22 +39,17 @@ func hello(db *Database) http.HandlerFunc {
 				http.Redirect(w, r, "/", 302)
 			default:
 				fmt.Fprintf(w, "Sorry, only GET and POST methods are supported.")
-			}
 		}
+	}
 }
 
-
-
-
-
-
 func main() {
+	
 	db := &Database{}
 
 	if err := db.Setup(); err != nil {
 		log.Fatal(err)
 	}
-
 
 	http.HandleFunc("/", hello(db))
 	
